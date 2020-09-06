@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Угадай число{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="header">
+            <h1>Игра "Угадай число"</h1>
+        </div>
+        {% if game_begin %}
+            <p>Игра начата</p>
+            {% if creator %}
+            <p>Загаданное число {{game.number}}</p>
+            <p>Игра продолжается</p>
+            {% else %}
+                {{ res }}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {{ form }}
+                    <input type="submit" value="ОТгадать число" />
+                </form>
+            {% endif %}
+        {% else %}
+            {% if creator %}
+                <p>Число отгадано! Игра закончилась. Сделано попыток {{game.amount}}</p>
+            {% else %}
+                {% if amount != 0 %}
+                <p>Вы угадали число c {{ amount }} попытки! </p>
+                {% endif %}
+            {% endif %}
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="ЗАгадать число" />
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}
